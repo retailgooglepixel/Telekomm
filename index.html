@@ -9,6 +9,7 @@
     :root {
       --t-magenta: #E20074;
       --t-grey: #4B4B4B;
+      --t-grey-medium: #757575;
       --g-blue: #4285F4;
       --g-red: #EA4335;
       --g-yellow: #FBBC05;
@@ -41,12 +42,24 @@
     }
 
     .brand-area {
-      font-weight: 700;
-      color: var(--t-magenta);
-      font-size: 1.5rem;
       display: flex;
-      align-items: center;
-      gap: 10px;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .brand-headline {
+      font-weight: 900;
+      font-size: 1.4rem;
+      line-height: 1.1;
+      color: var(--t-grey);
+    }
+
+    .brand-subline {
+      font-size: 0.85rem;
+      color: var(--t-grey-medium);
+      font-weight: 400;
+      margin-top: 2px;
+      letter-spacing: 0.5px;
     }
 
     .pixel-badge {
@@ -56,13 +69,16 @@
       padding: 4px 12px;
       border-radius: 20px;
       font-weight: 500;
+      white-space: nowrap;
     }
 
-    /* --- Hero Section --- */
+    /* --- Hero Section (mit Bildern) --- */
     .hero {
       text-align: center;
       padding: 80px 20px;
       background: linear-gradient(180deg, #ffffff 0%, var(--bg-color) 100%);
+      position: relative; /* Wichtig für die Bilder */
+      overflow: hidden;   /* Damit Bilder nicht scrollen erzeugen */
     }
 
     h1 {
@@ -70,6 +86,8 @@
       margin: 0;
       color: var(--t-grey);
       line-height: 1.2;
+      position: relative;
+      z-index: 2; /* Text über den Bildern */
     }
 
     .hero span {
@@ -86,6 +104,40 @@
       margin-top: 20px;
       font-size: 1.2rem;
       color: #666;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Dekorative Bilder */
+    .hero-img {
+      position: absolute;
+      bottom: 0;
+      z-index: 1;
+      max-height: 350px; /* Maximale Höhe */
+      width: auto;
+      pointer-events: none; /* Klicks gehen durch */
+    }
+
+    .hero-img-left {
+      left: -20px;
+      max-width: 25vw; /* Max 25% der Bildschirmbreite */
+    }
+
+    .hero-img-right {
+      right: -20px;
+      max-width: 30vw;
+    }
+
+    /* Mobile Anpassung für Bilder */
+    @media (max-width: 768px) {
+      .hero-img {
+        opacity: 0.3; /* Bilder blasser machen auf Handy */
+        max-height: 200px;
+      }
+      .hero-img-left { left: -50px; }
+      .hero-img-right { right: -50px; }
+      
+      .hero span { font-size: 3rem; } /* Text etwas kleiner auf Handy */
     }
 
     /* --- Content Grid --- */
@@ -93,6 +145,8 @@
       max-width: 900px;
       margin: 0 auto;
       padding: 20px;
+      position: relative;
+      z-index: 2;
     }
 
     .section-title {
@@ -127,7 +181,6 @@
       box-shadow: 0 10px 20px rgba(0,0,0,0.08);
     }
 
-    /* Google Colors Decoration */
     .card::before {
       content: '';
       position: absolute;
@@ -192,7 +245,6 @@
     a { color: var(--t-magenta); text-decoration: none; font-weight: 500; }
     a:hover { text-decoration: underline; }
 
-    /* Styling für die detaillierten Listen */
     .detail-list {
       list-style: none;
       padding: 0;
@@ -220,7 +272,23 @@
       color: #444;
     }
 
-    /* --- Feedback Section --- */
+    .btn-link {
+      display: inline-block;
+      background-color: var(--t-magenta);
+      color: white !important;
+      padding: 10px 20px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 700;
+      margin-top: 15px;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+    .btn-link:hover {
+      background-color: #b0005a;
+      text-decoration: none;
+    }
+
     .feedback-section {
       background: white;
       border-radius: var(--card-radius);
@@ -228,7 +296,7 @@
       margin-top: 80px;
       margin-bottom: 60px;
       text-align: center;
-      box-shadow: 0 10px 30px rgba(226, 0, 116, 0.1); /* Magenta glow */
+      box-shadow: 0 10px 30px rgba(226, 0, 116, 0.1);
       border: 1px solid rgba(226, 0, 116, 0.2);
     }
 
@@ -249,7 +317,6 @@
     }
 
     .rating-option:hover { transform: scale(1.1); }
-
     .rating-option input { display: none; }
 
     .emoji-label {
@@ -320,20 +387,29 @@
       border-color: var(--g-blue);
       background: white;
     }
-
   </style>
 </head>
 <body>
 
   <header>
     <div class="brand-area">
-      <span style="font-size:2rem; line-height:1;">Premium trifft Premium</span> 
-      <span>Gemini Ära mit Google Pixel</span>
+      <div class="brand-headline">
+        <span style="color: var(--t-magenta);">Premium</span> trifft <span style="color: var(--t-magenta);">Premium</span>
+      </div>
+      <div class="brand-subline">
+        Gemini Ära mit Google Pixel
+      </div>
     </div>
     <div class="pixel-badge">Pixel 10 & Gemini</div>
   </header>
 
   <div class="hero">
+    <!-- BILD LINKS -->
+    <img src="https://i.postimg.cc/Dwd1VwJD/image-from-rawpixel-id-6167453-png.png" alt="Abstract Left" class="hero-img hero-img-left">
+    
+    <!-- BILD RECHTS -->
+    <img src="https://i.postimg.cc/hGz9hW2s/famili.png" alt="Family Right" class="hero-img hero-img-right">
+
     <h1>Pixel 10 Training<br><span>Bonn 2025</span></h1>
     <p class="subtitle">Erlebe Spektakuläres jeden Tag.</p>
   </div>
@@ -352,23 +428,40 @@
     </div>
 
     <div class="card">
-      <div class="card-header">Detailvergleich: Gemini vs. Wettbewerb <div class="toggle-icon">+</div></div>
+      <div class="card-header">Detailvergleich: Gemini vs. Perplexity, ChatGPT & Co <div class="toggle-icon">+</div></div>
       <div class="card-body">
         <span class="answer-tag">Wettbewerb & Abgrenzung</span>
         <ul class="detail-list">
           <li>
+            <span class="detail-title">🤖 Gemini vs. Perplexity</span>
+            Perplexity ist eine exzellente <strong>"Antwort-Maschine"</strong> (Such-Aggregator), die stark darin ist, Quellen aus dem Web zusammenzufassen. Gemini auf dem Pixel 10 ist mehr als das: Es ist ein <strong>"Kreativ- und System-Partner"</strong>. Perplexity kann nicht deine Apps steuern, Termine in deinen Kalender eintragen oder deine lokalen Fotos bearbeiten. Gemini kann beides: Suchen und Handeln.
+          </li>
+          <li>
             <span class="detail-title">🤖 Gemini vs. ChatGPT</span>
-            ChatGPT ist ein exzellenter "Chat-Partner". Gemini hingegen ist ein <strong>"System-Agent"</strong>. Gemini kann auf dem Pixel 10 tief in deine Apps greifen ("Finde die PDF in meinen Mails, fasse sie zusammen und speichere das in Drive"). ChatGPT ist meistens "draußen" und isoliert.
+            ChatGPT ist stark im Chat, aber meist isoliert. Gemini ist ein <strong>"System-Agent"</strong>, der tief in deine Google Apps greift ("Finde die PDF in meinen Mails").
           </li>
           <li>
             <span class="detail-title">🍎 Gemini vs. Apple Intelligence</span>
-            Apple setzt stark auf Datenschutz durch lokale Verarbeitung, aber das Wissen ist oft begrenzt (Siri muss oft an ChatGPT übergeben). <strong>Gemini Nano</strong> (auf dem Pixel 10) bietet beides: Lokale Verarbeitung für Sensibles PLUS das riesige Weltwissen von Google in der Cloud, ohne dass du den Assistenten wechseln musst.
-          </li>
-          <li>
-            <span class="detail-title">🌌 Gemini vs. Galaxy AI</span>
-            Samsung ist ein Partner und nutzt Google Cloud. Aber: Das Pixel 10 erhält neue KI-Features oft Monate früher (Feature Drops) und die Kamera-KI (z.B. Video Boost) ist speziell auf den Tensor-Chip abgestimmt, nicht auf Snapdragon.
+            Apple nutzt für schwierige Fragen oft ChatGPT. <strong>Gemini Nano</strong> (Pixel 10) verarbeitet Daten lokal für Datenschutz, nutzt aber nahtlos die Cloud für komplexes Weltwissen – alles aus einer Hand.
           </li>
         </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">Datenquellen & Hintergrundsysteme <div class="toggle-icon">+</div></div>
+      <div class="card-body">
+        <span class="answer-tag">Deep Dive</span>
+        <p><strong>Woher kommt das Wissen?</strong><br>
+        Gemini wurde "multimodal" trainiert – das heißt, es hat nicht nur Texte gelesen, sondern gleichzeitig Videos geschaut, Code analysiert und Bilder betrachtet. Die Datenquellen sind öffentliche Web-Daten, lizenzierte Inhalte (Bücher, Medien) und wissenschaftliche Datensätze.</p>
+        
+        <p><strong>Die Hardware dahinter:</strong><br>
+        Das Training läuft auf Googles eigenen Supercomputern (TPU v6). Auf dem Pixel 10 läuft eine effiziente Version ("Nano") direkt auf dem <strong>Tensor G5 Chip</strong>.</p>
+        
+        <p><strong>Datenschutz:</strong><br>
+        Deine privaten Daten in Workspace (Docs, Sheets, Drive) werden <strong>nicht</strong> verwendet, um das öffentliche Gemini-Modell zu trainieren.</p>
+        
+        <a href="https://gemini.google/about/" target="_blank" class="btn-link">Mehr Infos & Whitepaper ansehen →</a>
       </div>
     </div>
 
@@ -415,14 +508,6 @@
                <em>Prompt:</em> "Ich habe eine Google Tabelle mit Spalte A (Produkt) und Spalte B (Umsatz). Schreibe mir eine Formel, die den Gesamtumsatz nur für Produkte berechnet, die das Wort 'Pixel' enthalten."
             </div>
           </li>
-
-          <li>
-            <span class="detail-title">📢 Präsentationen (Meeting Vorbereitung)</span>
-            Strukturierung von Ideen für Pitches.
-            <div class="example-box">
-               <em>Prompt:</em> "Erstelle eine Gliederung für eine 10-Minuten-Präsentation für einen Mittelständler, warum er seine Firmenflotte auf Pixel 10 umstellen sollte. Fokus: Sicherheit (Titan Chip) und Kostenersparnis durch Langlebigkeit."
-            </div>
-          </li>
         </ul>
       </div>
     </div>
@@ -431,23 +516,15 @@
     <div class="section-title"><span class="section-icon">💎</span> Abos & Technik</div>
 
     <div class="card">
-      <div class="card-header">Gemini Varianten & Aktivierung <div class="toggle-icon">+</div></div>
+      <div class="card-header">Gemini Varianten & Aktivierung (Update: 3.0) <div class="toggle-icon">+</div></div>
       <div class="card-body">
         <span class="answer-tag">Up-Selling</span>
         <p><strong>Gemini (Basic):</strong> Kostenlos. Modell: Gemini Flash. Gut für schnelle Antworten.<br>
-        <strong>Gemini AI Pro:</strong> Teil des "Google One AI Premium" Abos (ca. 22€/Monat). Modell: <strong>Gemini 2.5 Pro</strong> (größeres Kontextfenster, logisches Denken) + Integration in Docs/Gmail + 2TB Speicher.<br>
+        <strong>Gemini AI Pro:</strong> Teil des "Google One AI Premium" Abos (ca. 22€/Monat).<br>
+        Enthält jetzt das brandneue <strong>Gemini 3.0</strong> (noch klüger, schneller und mit riesigem Kontextfenster) + Integration in Docs/Gmail + 2TB Speicher.<br>
         <br>
         <em>Aktivierung:</em> Einfach über die Google One App. Käufer des Pixel 10 Pro erhalten oft <strong>1 Jahr Google AI Premium kostenlos</strong> zum Testen.</p>
         <p><a href="https://gemini.google/subscriptions/" target="_blank">Mehr zu den Abos ansehen →</a></p>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header">Datenquellen & Datenschutz <div class="toggle-icon">+</div></div>
-      <div class="card-body">
-        <span class="answer-tag">Privacy</span>
-        <p>Gemini lernt aus öffentlichen Daten. <strong>Wichtig nicht nur für Firmenkunden:</strong> Wenn du Gemini für Workspace (Enterprise) nutzt, werden deine Unternehmensdaten <strong>nicht</strong> genutzt, um die KI für andere zu trainieren. Deine Daten gehören dir.</p>
-        <p><a href="https://gemini.google/policy-guidelines/" target="_blank">Zu den Datenschutz-Richtlinien →</a></p>
       </div>
     </div>
 
@@ -467,35 +544,34 @@
       <div class="card-body">
         <span class="answer-tag">Best Practice</span>
         <p>Die Zauberformel: <strong>Rolle + Aufgabe + Kontext + Format</strong>.</p>
-        <p>Hier ein Beispiel, das ihr direkt live vorführen könnt (Text kopieren und Gemini vorlesen lassen):</p>
-        
         <div style="background:#fff0f8; padding:15px; border-radius:12px; border-left: 5px solid var(--t-magenta); margin:15px 0; font-style:italic; color:#333; box-shadow:0 2px 5px rgba(0,0,0,0.05);">
            "Du bist ein <strong>Telekom-Techniker</strong>, der aber heimlich ein leidenschaftlicher <strong>Shakespeare-Schauspieler</strong> ist (Rolle). <br><br>
            Erkläre einem skeptischen Kunden, warum das <strong>Pixel 10</strong> dank 5G und Gemini viel besser ist als sein alter Router (Aufgabe). <br><br>
            Benutze eine <strong>dramatische, altertümliche Sprache</strong> ('Oh, welch Geschwindigkeit!'), erwähne die Farbe <strong>Magenta</strong> als 'Licht der Hoffnung' (Kontext). <br><br>
            Beende deine Rede mit einem kurzen, coolen <strong>Rap über Glasfaser</strong> (Format)."
         </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">Foto zum Leben erwecken (Nano + Banana Demo) <div class="toggle-icon">+</div></div>
+      <div class="card-body">
+        <span class="answer-tag">Magic Editor & Reimagine</span>
+        <p>Das "Banana"-Beispiel zeigt die Macht der lokalen KI (Nano) kombiniert mit der Cloud. </p>
+        <p><strong>Live-Demo Anleitung:</strong></p>
+        <ol style="margin-bottom:15px; padding-left:20px;">
+          <li>Öffne ein Foto, auf dem eine echte Banane zu sehen ist.</li>
+          <li>Tippe auf "Magic Editor" (unten links) und markiere die Banane.</li>
+          <li>Wähle "Reimagine" (Neu Erfinden).</li>
+        </ol>
         
-        <p style="font-size:0.9rem; margin-top:5px; color:var(--t-magenta);"><em>👉 Tipp: Lass Gemini das Ergebnis mit der Funktion "Vorlesen" vortragen!</em></p>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header">Demo-Idee: Werbefilm für Pixel 10 erstellen <div class="toggle-icon">+</div></div>
-      <div class="card-body">
-        <span class="answer-tag">Kreativ-Prompt</span>
-        <p>Versuche diesen Prompt in Gemini Advanced (mit VEO Unterstützung auf dem Pixel 10):</p>
-        <p class="prompt-chip">Erstelle ein Konzept für einen 30-Sekunden TV-Spot.</p>
-        <p class="prompt-chip">Szene: Bonn bei Nacht, ein Pixel 10 Pro leuchtet magenta.</p>
-        <p class="prompt-chip">Zielgruppe: Tech-Enthusiasten.</p>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header">Foto zum Leben erwecken <div class="toggle-icon">+</div></div>
-      <div class="card-body">
-        <span class="answer-tag">Magic Editor</span>
-        <p>Nutze im Pixel 10 den "Magic Editor". Tippe ein Objekt an und verschiebe es. Oder nutze die generative Füllung, um den Bildausschnitt zu erweitern. Die KI "träumt" den Rest des Bildes basierend auf dem Kontext dazu.</p>
+        <div style="background:#f4f7fc; padding:15px; border-radius:8px; border:1px dashed var(--g-blue);">
+          <strong>Der Prompt:</strong><br>
+          "Verwandle die Banane in eine antike Porzellan-Figur einer Banane mit feinem Goldrand und Rissen in der Glasur."
+        </div>
+        <p style="margin-top:10px; font-size:0.9rem; color:#666;">
+          Die KI berechnet Licht, Schatten und Perspektive neu, sodass es zu 100% realistisch aussieht.
+        </p>
       </div>
     </div>
 
@@ -554,7 +630,10 @@
 
     // Accordion Logic
     document.querySelectorAll('.card').forEach(card => {
-      card.addEventListener('click', () => {
+      card.addEventListener('click', (e) => {
+        // Prevent opening accordion if a link button was clicked
+        if (e.target.classList.contains('btn-link')) return;
+
         const body = card.querySelector('.card-body');
         card.classList.toggle('active');
         
