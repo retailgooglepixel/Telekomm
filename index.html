@@ -72,13 +72,46 @@
       white-space: nowrap;
     }
 
-    /* --- Hero Section (mit Bildern) --- */
+    /* --- Hero Section (Hintergrundbild-Logik) --- */
     .hero {
       text-align: center;
-      padding: 80px 20px;
-      background: linear-gradient(180deg, #ffffff 0%, var(--bg-color) 100%);
+      padding: 100px 20px; /* Etwas mehr Platz */
       position: relative; 
       overflow: hidden;   
+      /* Fallback Farbe */
+      background-color: #fff;
+    }
+
+    /* Das transparente Hintergrundbild */
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      /* Das Familien-Bild als Background */
+      background-image: url('https://i.postimg.cc/hGz9hW2s/famili.png');
+      background-size: cover;     /* Füllt den Bereich komplett aus */
+      background-position: center top; /* Zentriert, Fokus oben */
+      background-repeat: no-repeat;
+      opacity: 0.15; /* HIER DIE TRANSPARENZ EINSTELLEN (0.15 = 15% sichtbar) */
+      z-index: 0;
+      pointer-events: none;
+      filter: grayscale(20%); /* Optional: Leicht entsättigt für cleaner Look */
+    }
+
+    /* Verlauf über dem Bild, damit es nach unten weich ausläuft */
+    .hero::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(to bottom, rgba(248,249,250,0) 0%, var(--bg-color) 100%);
+      z-index: 1;
+      pointer-events: none;
     }
 
     h1 {
@@ -87,7 +120,7 @@
       color: var(--t-grey);
       line-height: 1.2;
       position: relative;
-      z-index: 2; /* Text über den Bildern */
+      z-index: 3; /* Text über allem */
     }
 
     .hero span {
@@ -103,53 +136,40 @@
     .subtitle {
       margin-top: 20px;
       font-size: 1.2rem;
-      color: #666;
+      color: #444; /* Etwas dunkler für Kontrast */
       position: relative;
-      z-index: 2;
+      z-index: 3;
+      font-weight: 500;
     }
 
-    /* Dekorative Bilder */
-    .hero-img {
-      position: absolute;
-      z-index: 1; /* Hinter dem Text */
-      width: auto;
-      pointer-events: none; /* Klicks gehen durch */
-      transition: all 0.3s ease;
-    }
-
+    /* Linkes Deko Bild (bleibt als Element) */
     .hero-img-left {
+      position: absolute;
+      z-index: 2; /* Über dem Hintergrund, unter dem Text */
+      width: auto;
+      pointer-events: none;
+      transition: all 0.3s ease;
       left: 5%; 
       bottom: 0;
       max-height: 350px;
       max-width: 25vw;
+      opacity: 0.8;
     }
 
-    /* RECHTES BILD: MASSIV VERGRÖßERT & TIEFER GESETZT */
-    .hero-img-right {
-      right: -5%;      /* Etwas weiter rausgeschoben für besseren Anschnitt */
-      bottom: -450px;  /* Stark nach unten gezogen, damit es nicht zu hoch sitzt */
-      max-height: 1100px; /* Riesig (+40%) */
-      max-width: 85vw;   
-    }
-
-    /* Mobile Anpassung für Bilder */
+    /* Mobile Anpassung */
     @media (max-width: 768px) {
-      .hero-img {
-        opacity: 0.25; 
-      }
       .hero-img-left { 
-        left: -10px; 
-        max-height: 220px;
-        bottom: 0;
-      }
-      .hero-img-right { 
-        right: -60px; 
-        bottom: -80px;
-        max-height: 450px; /* Auch mobil größer */
-        max-width: 70vw;
+        left: -20px; 
+        max-height: 200px;
+        opacity: 0.5;
       }
       
       .hero span { font-size: 3rem; }
+      
+      /* Hintergrund auf Handy etwas besser positionieren */
+      .hero::before {
+        background-position: 70% center; 
+      }
     }
 
     /* --- Content Grid --- */
@@ -158,7 +178,7 @@
       margin: 0 auto;
       padding: 20px;
       position: relative;
-      z-index: 2;
+      z-index: 3;
     }
 
     .section-title {
@@ -416,11 +436,10 @@
   </header>
 
   <div class="hero">
-    <!-- BILD LINKS -->
-    <img src="https://i.postimg.cc/Dwd1VwJD/image-from-rawpixel-id-6167453-png.png" alt="Abstract Left" class="hero-img hero-img-left">
+    <!-- Linkes Deko-Bild bleibt -->
+    <img src="https://i.postimg.cc/Dwd1VwJD/image-from-rawpixel-id-6167453-png.png" alt="Abstract Left" class="hero-img-left">
     
-    <!-- BILD RECHTS (Stark Vergrößert & Tiefer) -->
-    <img src="https://i.postimg.cc/hGz9hW2s/famili.png" alt="Family Right" class="hero-img hero-img-right">
+    <!-- Rechtes Bild ist jetzt im CSS als Background definiert -->
 
     <h1>Pixel 10 Training<br><span>Bonn 2025</span></h1>
     <p class="subtitle">Erlebe Spektakuläres jeden Tag.</p>
@@ -650,4 +669,47 @@
         card.classList.toggle('active');
         
         if (card.classList.contains('active')) {
-          body.styl
+          body.style.maxHeight = body.scrollHeight + "px";
+        } else {
+          body.style.maxHeight = 0;
+        }
+      });
+    });
+
+    // Form Submission Logic for External Hosting (GitHub)
+    document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const btn = this.querySelector('.btn-submit');
+      const originalText = btn.innerText;
+      btn.innerText = 'Sende...';
+      btn.disabled = true;
+
+      const formData = {
+        rating: this.rating.value,
+        feedback: this.feedback.value
+      };
+
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors', 
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+      .then(() => {
+        // Da wir 'no-cors' nutzen, gehen wir davon aus, dass es geklappt hat,
+        // wenn kein Netzwerkfehler auftritt.
+        document.getElementById('feedbackForm').style.display = 'none';
+        document.getElementById('successMessage').style.display = 'block';
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        btn.innerText = 'Fehler. Bitte erneut versuchen.';
+        btn.disabled = false;
+      });
+    });
+  </script>
+</body>
+</html>
